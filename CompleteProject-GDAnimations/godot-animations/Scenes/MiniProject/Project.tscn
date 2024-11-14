@@ -1,0 +1,252 @@
+[gd_scene load_steps=20 format=4 uid="uid://cu2sevruqpjse"]
+
+[ext_resource type="Texture2D" uid="uid://bx3rurotkx3fc" path="res://Assets/MiniProject/Background.png" id="1_44c25"]
+[ext_resource type="Script" path="res://Scripts/MiniProject/Project.gd" id="1_j4row"]
+[ext_resource type="PackedScene" uid="uid://behdqdcrl1oqu" path="res://Scenes/MiniProject/Coin.tscn" id="2_071h5"]
+[ext_resource type="Texture2D" uid="uid://ct4ciq3ie3dj4" path="res://Assets/MiniProject/Tiles/Dirt.png" id="2_audec"]
+[ext_resource type="Texture2D" uid="uid://dm34wifbobfn4" path="res://Assets/MiniProject/Tiles/Grass.png" id="3_plj8j"]
+[ext_resource type="Script" path="res://Scripts/MiniProject/Player.gd" id="4_3b4rw"]
+[ext_resource type="Texture2D" uid="uid://c2ij5j5q7md4h" path="res://Assets/MiniProject/Player/Jump.png" id="4_i8tsi"]
+[ext_resource type="Texture2D" uid="uid://dil1b3o8d17wn" path="res://Assets/MiniProject/Player/Idle.png" id="5_i8f36"]
+[ext_resource type="Script" path="res://Scripts/MiniProject/CoinCollectedParticles.gd" id="9_hiq4b"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qiooq"]
+texture = ExtResource("2_audec")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i33vf"]
+texture = ExtResource("3_plj8j")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[sub_resource type="TileSet" id="TileSet_jonye"]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_qiooq")
+sources/1 = SubResource("TileSetAtlasSource_i33vf")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e11o1"]
+size = Vector2(42, 58)
+
+[sub_resource type="Animation" id="Animation_wxgx1"]
+resource_name = "Idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_i8f36")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:can_jump")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"spawn_new_coin"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../LandedParticles:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_coe6b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_i8f36")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6o3bq"]
+resource_name = "Jump"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_i8tsi")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.5, 0.5), Vector2(1, 1)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [Vector2(0, -1250)],
+"method": &"apply_central_impulse"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:can_jump")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4js8i"]
+_data = {
+"Idle": SubResource("Animation_wxgx1"),
+"Jump": SubResource("Animation_6o3bq"),
+"RESET": SubResource("Animation_coe6b")
+}
+
+[sub_resource type="Curve" id="Curve_08yew"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_p1twa"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Project" type="Node"]
+script = ExtResource("1_j4row")
+coin = ExtResource("2_071h5")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(576, 324)
+scale = Vector2(1.145, 1.145)
+texture = ExtResource("1_44c25")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." groups=["TileMapLayer"]]
+tile_map_data = PackedByteArray("AAAAAAoAAAAAAAAAAAABAAoAAAAAAAAAAAACAAoAAAAAAAAAAAADAAoAAAAAAAAAAAAEAAoAAAAAAAAAAAAFAAoAAAAAAAAAAAARAAoAAAAAAAAAAAAQAAoAAAAAAAAAAAAPAAoAAAAAAAAAAAAOAAoAAAAAAAAAAAANAAoAAAAAAAAAAAAMAAoAAAAAAAAAAAALAAoAAAAAAAAAAAAKAAoAAAAAAAAAAAAJAAoAAAAAAAAAAAAIAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAGAAoAAAAAAAAAAAARAAkAAQAAAAAAAAAQAAkAAQAAAAAAAAAPAAkAAQAAAAAAAAAOAAkAAQAAAAAAAAANAAkAAQAAAAAAAAAMAAkAAQAAAAAAAAALAAkAAQAAAAAAAAAKAAkAAQAAAAAAAAAJAAkAAQAAAAAAAAAIAAkAAQAAAAAAAAAAAAkAAQAAAAAAAAABAAkAAQAAAAAAAAACAAkAAQAAAAAAAAADAAkAAQAAAAAAAAAEAAkAAQAAAAAAAAAFAAkAAQAAAAAAAAAGAAkAAQAAAAAAAAAHAAkAAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_jonye")
+
+[node name="Player" type="RigidBody2D" parent="." groups=["Player"]]
+position = Vector2(576, 393)
+gravity_scale = 2.0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("4_3b4rw")
+can_jump = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = ExtResource("5_i8f36")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(-1, 19)
+shape = SubResource("RectangleShape2D_e11o1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+libraries = {
+"": SubResource("AnimationLibrary_4js8i")
+}
+speed_scale = 8.0
+
+[node name="CoinCollectedParticles" type="CPUParticles2D" parent="."]
+position = Vector2(576, 248)
+emitting = false
+amount = 30
+lifetime = 0.75
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 75.0
+initial_velocity_max = 100.0
+scale_amount_min = 20.0
+scale_amount_max = 25.0
+scale_amount_curve = SubResource("Curve_08yew")
+color_ramp = SubResource("Gradient_p1twa")
+script = ExtResource("9_hiq4b")
+
+[node name="LandedParticles" type="CPUParticles2D" parent="."]
+position = Vector2(576, 576)
+emitting = false
+amount = 10
+lifetime = 0.75
+one_shot = true
+explosiveness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(20, 1)
+direction = Vector2(0, 0)
+spread = 180.0
+initial_velocity_min = 75.0
+initial_velocity_max = 100.0
+scale_amount_min = 10.0
+scale_amount_max = 15.0
+scale_amount_curve = SubResource("Curve_08yew")
+color = Color(1, 0.670588, 0.101961, 1)
+color_ramp = SubResource("Gradient_p1twa")
+
+[connection signal="body_entered" from="Player" to="Player" method="_on_body_entered"]
